@@ -1,54 +1,77 @@
 # Invoice SaaS
 
-**Problem:** Freelancers need to send professional invoices and get paid online.  
-**Solution:** Create and send invoices, share a public link, and collect payment with Stripe.
+Create and send professional invoices, share a public link, and collect payment via **Razorpay** (India) or **Stripe** (elsewhere).
+
+## Features
+
+- Create invoices with line items, due dates, client info
+- Public invoice page at `/invoice/[publicId]` — no login required for clients
+- **Pay now** — Razorpay Checkout (India) or Stripe Checkout
+- Webhook marks invoice as Paid automatically
+- Dashboard: invoice list, KPIs, audit log
+- Auth: credentials + optional Google OAuth
 
 ## Stack
 
 - Next.js 14 (App Router), TypeScript, Tailwind, @repo/ui
-- PostgreSQL (Neon), Drizzle ORM
+- PostgreSQL, Drizzle ORM
 - NextAuth (credentials + optional Google)
-- Stripe (Checkout + webhooks). Optional: Resend, PDF, R2
+- Razorpay or Stripe (payments)
 
 ## Setup
 
-1. Copy `.env.example` to `.env` and set:
-   - `DATABASE_URL` — Neon or any PostgreSQL (or `postgresql://postgres:postgres@localhost:5432/postgres` with Docker)
-   - `NEXTAUTH_SECRET` — e.g. `openssl rand -base64 32`
-   - `NEXTAUTH_URL` — `http://localhost:3000`
-   - **Razorpay (India):** `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET` — see [docs/RAZORPAY_SETUP.md](../../docs/RAZORPAY_SETUP.md)
-
-- **Stripe (outside India):** `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
-
-2. Migrations (from repo root):
-
+1. **Copy env:**
    ```bash
-   npm run db:generate -w invoice-saas
+   cp .env.example .env
+   ```
+
+2. **Set in `.env`:**
+   - `DATABASE_URL` — PostgreSQL (e.g. `postgresql://postgres:postgres@localhost:5432/invoice` with Docker)
+   - `NEXTAUTH_SECRET` — run `node scripts/generate-secret.js` from repo root
+   - `NEXTAUTH_URL` — `http://localhost:3000`
+   - **Razorpay (India):** `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, optional `RAZORPAY_WEBHOOK_SECRET` — see [RAZORPAY_SETUP.md](../../docs/RAZORPAY_SETUP.md)
+   - **Stripe (outside India):** `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
+
+3. **Migrations** (from repo root):
+   ```bash
    npm run db:migrate -w invoice-saas
    ```
 
-3. Run:
+4. **Run:**
    ```bash
    npm run dev -w invoice-saas
    ```
 
+5. **Demo data** (optional):
+   ```bash
+   npm run demo:seed
+   ```
+   Then log in as `demo@example.com` / `demo1234`
+
 ## Routes
 
-- `/` — Landing; `/login`, `/register` — Auth
-- `/dashboard` — Invoices list, KPIs, link to public invoice
-- `/dashboard/invoices/new` — Create invoice
-- `/dashboard/settings`, `/dashboard/audit-log`
-- `/invoice/[publicId]` — Public invoice view + Pay with Stripe
+| Path | Purpose |
+|------|---------|
+| `/` | Landing |
+| `/login`, `/register` | Auth |
+| `/dashboard` | Invoice list, KPIs |
+| `/dashboard/invoices/new` | Create invoice |
+| `/dashboard/settings` | Settings |
+| `/dashboard/audit-log` | Audit log |
+| `/invoice/[publicId]` | Public invoice + Pay now (Razorpay/Stripe) |
 
-## Status
-
-- Auth (register/login, NextAuth credentials + optional Google), dashboard protected
-- Invoices CRUD (API + UI), public invoice page, Stripe Checkout + webhook
-- E2E: `npm run e2e` (start dev server on port 3000 first)
-
-## E2E tests
+## E2E Tests
 
 ```bash
-npm run dev -w invoice-saas   # in one terminal
-npm run e2e -w invoice-saas   # in another
+npm run dev -w invoice-saas   # Terminal 1
+npm run e2e -w invoice-saas  # Terminal 2
 ```
+
+## API
+
+- `GET/POST /api/invoices` — List/create invoices
+- `GET/PATCH/DELETE /api/invoices/[id]` — Invoice CRUD
+- `GET /api/invoice/public/[publicId]` — Public invoice data
+- `POST /api/checkout` — Create checkout (Razorpay order or Stripe session)
+- `POST /api/webhooks/razorpay` — Razorpay webhook
+- `POST /api/webhooks/stripe` — Stripe webhook
