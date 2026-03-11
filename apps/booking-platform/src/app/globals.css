@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Bulletproof: always visible, no white screen */
+html,
+body {
+  background-color: #f7f4ef !important;
+  color: #1c1c1c !important;
+  min-height: 100vh !important;
+}
+
+/* Booking Platform: light, airy, warm off-white */
+@layer base {
+  :root {
+    --font-display: var(--font-sans);
+    --background: #f7f4ef;
+    --surface: #ffffff;
+    --surface-hover: #f7f4ef;
+    --card: #ffffff;
+    --card-foreground: #1c1c1c;
+    --foreground: #1c1c1c;
+    --muted-foreground: #888888;
+    --primary: #1a1a2e;
+    --primary-foreground: #ffffff;
+    --secondary: #e8e4dd;
+    --secondary-foreground: #1c1c1c;
+    --accent: #1a1a2e;
+    --accent-foreground: #ffffff;
+    --accent-cta: #ff6b35;
+    --muted: #f0ede8;
+    --destructive: #dc2626;
+    --border: #e8e4dd;
+    --radius: 6px;
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.08);
+    --focus-ring: rgba(26, 26, 46, 0.3);
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Custom scrollbar */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+@layer base {
+  *:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeSlideIn 200ms ease-out forwards;
+  }
+}
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

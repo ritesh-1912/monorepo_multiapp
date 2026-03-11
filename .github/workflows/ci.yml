@@ -1,0 +1,61 @@
+# CI: lint and build all workspaces. Tests run when present.
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build shared UI
+        run: npm run build -w @repo/ui
+
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+
+      - name: Format check
+        run: npm run format:check
+        continue-on-error: true
+
+      - name: Build apps
+        run: |
+          npm run build -w invoice-saas
+          npm run build -w booking-platform
+          npm run build -w analytics-dashboard
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build shared UI
+        run: npm run build -w @repo/ui
+
+      - name: Run tests
+        run: npm run test --workspaces --if-present
+        continue-on-error: true

@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Bulletproof: always visible, no white screen */
+html,
+body {
+  background-color: #0c0c0c !important;
+  color: #fafafa !important;
+  min-height: 100vh !important;
+}
+
+/* Analytics Dashboard: dark, readable contrast, lime accent */
+@layer base {
+  :root {
+    --font-display: var(--font-sans);
+    --background: #0c0c0c;
+    --surface: #141414;
+    --surface-hover: #1c1c1c;
+    --card: #141414;
+    --card-foreground: #fafafa;
+    --foreground: #fafafa;
+    --muted-foreground: #a3a3a3;
+    --primary: #c6f04c;
+    --primary-foreground: #0c0c0c;
+    --secondary: #1c1c1c;
+    --secondary-foreground: #fafafa;
+    --accent: #c6f04c;
+    --accent-foreground: #0c0c0c;
+    --muted: #1c1c1c;
+    --destructive: #ef4444;
+    --border: rgba(255, 255, 255, 0.08);
+    --radius: 6px;
+    --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.04);
+    --shadow-card-hover: 0 4px 24px rgba(0, 0, 0, 0.4);
+    --focus-ring: rgba(198, 240, 76, 0.35);
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Custom scrollbar */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+/* Focus visible for accessibility */
+@layer base {
+  *:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Page mount transition */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeSlideIn 200ms ease-out forwards;
+  }
+}
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

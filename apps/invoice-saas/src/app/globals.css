@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Bulletproof: always visible, no white screen */
+html,
+body {
+  background-color: #0f1117 !important;
+  color: #f1f5f9 !important;
+  min-height: 100vh !important;
+}
+
+/* Invoice SaaS: neutral dark, readable text and contrast */
+@layer base {
+  :root {
+    --font-display: var(--font-sans);
+    --background: #0f1117;
+    --surface: #161b27;
+    --surface-hover: #1e2435;
+    --card: #161b27;
+    --card-foreground: #f1f5f9;
+    --foreground: #f1f5f9;
+    --muted-foreground: #94a3b8;
+    --primary: #4f9eff;
+    --primary-foreground: #0f1117;
+    --secondary: #1e2435;
+    --secondary-foreground: #f1f5f9;
+    --accent: #4f9eff;
+    --accent-foreground: #0f1117;
+    --accent-purple: #7c3aed;
+    --muted: #1e2435;
+    --destructive: #ef4444;
+    --border: rgba(255, 255, 255, 0.08);
+    --radius: 6px;
+    --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.04);
+    --shadow-card-hover: 0 4px 24px rgba(0, 0, 0, 0.3);
+    --focus-ring: rgba(79, 158, 255, 0.3);
+  }
+}
+
+@layer base {
+  html {
+    font-size: 18px;
+  }
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-heading font-display;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+}
+
+/* Custom scrollbar */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+@layer base {
+  *:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeSlideIn 200ms ease-out forwards;
+  }
+}
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,32 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build
+dist
+.next
+out
+.turbo
+
+# Env and secrets (NEVER commit these)
+.env
+.env.local
+.env.*.local
+
+# API keys, credentials
+rzp-key.csv
+*-key.csv
+*-credentials*.json
+*.pem
+
+# IDE / OS
+.idea
+.DS_Store
+*.log
+
+# Testing
+coverage
+.playwright
+
+# Misc
+*.tsbuildinfo

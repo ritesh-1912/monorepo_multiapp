@@ -1,0 +1,17 @@
+# Local PostgreSQL for development. One DB per app to avoid schema conflicts.
+# DATABASE_URL per app: .../invoice, .../booking, .../analytics
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+
+volumes:
+  postgres_data: {}
