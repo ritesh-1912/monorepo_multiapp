@@ -1,15 +1,15 @@
 /** @type {import('next').NextConfig} */
 const path = require('path');
+const webpack = require('webpack');
 
 const nextConfig = {
   transpilePackages: ['@repo/ui'],
   webpack: (config) => {
-    // Work around next-auth's legacy CSS helper in RSC/App Router by aliasing it to a no-op shim.
-    config.resolve = config.resolve || {};
-    config.resolve.alias = config.resolve.alias || {};
+    // Work around next-auth's legacy CSS helper (large inline string breaks webpack) by replacing with no-op shim.
     const shimPath = path.resolve(__dirname, 'src/lib/next-auth-css-shim.js');
-    config.resolve.alias['next-auth/css'] = shimPath;
-    config.resolve.alias['next-auth/css/index.js'] = shimPath;
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(/^next-auth\/css\/?.*$/, shimPath)
+    );
     return config;
   },
 };
