@@ -42,6 +42,41 @@ Restart the dev server. The login page will show **Continue with Google**; new G
 
 ---
 
+---
+
+## 3. Google Sign-In on Vercel (Production)
+
+If you get **"Server error - There is a problem with the server configuration"** when using Google sign-in on Vercel, fix these:
+
+### A. Environment variables in Vercel
+
+In your Vercel project → **Settings** → **Environment Variables**, add or update:
+
+| Variable | Value | Notes |
+| -------- | ----- | ----- |
+| `NEXTAUTH_URL` | `https://your-app.vercel.app` | Use your **exact** Vercel URL (e.g. `https://invoice-xyz.vercel.app`) |
+| `AUTH_TRUST_HOST` | `true` | **Required on Vercel** – NextAuth must trust the host header |
+| `NEXTAUTH_SECRET` | (32+ char random string) | Required in production |
+| `GOOGLE_CLIENT_ID` | Your Google Client ID | Same as local |
+| `GOOGLE_CLIENT_SECRET` | Your Google Client Secret | Same as local |
+
+### B. Google Cloud Console – add Vercel URLs
+
+In **Google Cloud Console** → **Credentials** → your OAuth client → **Edit**:
+
+1. **Authorized JavaScript origins** – add:
+   - `https://your-app.vercel.app` (your Vercel URL)
+2. **Authorized redirect URIs** – add:
+   - `https://your-app.vercel.app/api/auth/callback/google`
+
+Use the exact URL Vercel gives you (e.g. `https://monorepo-multiapp-invoice-abc123.vercel.app`). No trailing slash.
+
+### C. Redeploy
+
+After changing env vars, trigger a **Redeploy** in Vercel so the new values are used.
+
+---
+
 ## Checklist
 
 | Step | What                                                                               |
@@ -49,3 +84,4 @@ Restart the dev server. The login page will show **Continue with Google**; new G
 | 1    | Google Cloud project + OAuth consent screen configured                             |
 | 2    | OAuth client ID (Web application) with redirect URI `.../api/auth/callback/google` |
 | 3    | `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `apps/invoice-saas/.env`          |
+| 4    | On Vercel: `NEXTAUTH_URL`, `AUTH_TRUST_HOST=true`, add Vercel URL to Google OAuth  |
