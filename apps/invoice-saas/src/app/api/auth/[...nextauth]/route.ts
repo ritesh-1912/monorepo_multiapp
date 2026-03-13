@@ -4,7 +4,7 @@
 import NextAuth from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
-// Validate required env vars early to avoid cryptic "server configuration" errors
+// Validate at request time (not build) to avoid failing Vercel build when env vars are unavailable
 function validateAuthConfig() {
   const issues: string[] = [];
   if (!process.env.NEXTAUTH_SECRET) issues.push('NEXTAUTH_SECRET');
@@ -23,8 +23,12 @@ function validateAuthConfig() {
     throw new Error(`Auth config: set in Vercel → Settings → Environment Variables: ${issues.join('; ')}`);
   }
 }
-validateAuthConfig();
 
-const handler = NextAuth(authOptions);
+const nextAuthHandler = NextAuth(authOptions);
+
+const handler: typeof nextAuthHandler = (req, context) => {
+  validateAuthConfig();
+  return nextAuthHandler(req, context);
+};
 
 export { handler as GET, handler as POST };
