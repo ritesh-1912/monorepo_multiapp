@@ -4,7 +4,7 @@ Before pushing this repo to GitHub, ensure **no secrets or API keys** are commit
 
 ## What is already protected
 
-- **`.env`** – Ignored (contains database URLs, NextAuth secret, Razorpay/Stripe keys, Google OAuth)
+- **`.env`** – Ignored (contains database URLs, NextAuth secret, Razorpay keys, Google OAuth)
 - **`.env.local`**, **`.env.*.local`** – Ignored
 - **`rzp-key.csv`** – Ignored (contains Razorpay credentials)
 - **`*-key.csv`**, **`*.pem`**, **`*-credentials*.json`** – Ignored

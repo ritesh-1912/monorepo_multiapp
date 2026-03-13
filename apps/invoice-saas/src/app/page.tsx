@@ -50,7 +50,7 @@ export default function HomePage() {
             </Link>
           </div>
           <p className="text-sm text-muted-foreground">
-            No credit card required · Works with Stripe / Razorpay
+            No credit card required · Works with Razorpay
           </p>
         </section>
 

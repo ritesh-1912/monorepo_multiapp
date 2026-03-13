@@ -6,13 +6,13 @@ This project needs a few credentials. Everything below is **free** and suitable 
 
 ## Order of operations
 
-Do these in order. You can run the apps with **only Step 1 + Step 2** (database + auth). Stripe is optional until you want to demo payments.
+Do these in order. You can run the apps with **only Step 1 + Step 2** (database + auth). Razorpay is optional until you want to demo payments.
 
 | Step | What                                  | Required? | Cost                       |
 | ---- | ------------------------------------- | --------- | -------------------------- |
 | 1    | PostgreSQL database                   | Yes       | Free                       |
 | 2    | NextAuth secret (generated locally)   | Yes       | Free                       |
-| 3    | Razorpay (India) or Stripe (payments) | Optional  | Free (test mode)           |
+| 3    | Razorpay (payments)                   | Optional  | Free (test mode)           |
 | 4    | Google OAuth (“Login with Google”)    | Optional  | Free (skip for simplicity) |
 
 ---
@@ -93,11 +93,7 @@ No signup. Generate a secret on your machine and put it in each app’s `.env`.
 
 ---
 
-## Step 3: Razorpay or Stripe (optional – for “Pay now” on invoices)
-
-**In India use Razorpay** (Stripe doesn’t support Indian businesses). Elsewhere you can use Stripe.
-
-### Razorpay (recommended in India)
+## Step 3: Razorpay (optional – for "Pay now" on invoices)
 
 1. Sign up at [dashboard.razorpay.com](https://dashboard.razorpay.com) (free).
 2. **Settings → API Keys**: create/copy **Key ID** and **Key Secret**.
@@ -108,25 +104,6 @@ No signup. Generate a secret on your machine and put it in each app’s `.env`.
 
 Full step-by-step: [docs/RAZORPAY_SETUP.md](RAZORPAY_SETUP.md).
 
-### Stripe (outside India)
-
-Only needed if you want the invoice app’s “Pay with Stripe” button to work. **Fully free** in test mode (no real charges).
-
-1. Sign up at [stripe.com](https://stripe.com) (free account).
-2. In the Dashboard, switch to **Test mode** (toggle in the top right).
-3. Go to **Developers → API keys**. Copy:
-   - **Secret key** (starts with `sk_test_...`) → `STRIPE_SECRET_KEY` in `apps/invoice-saas/.env`.
-   - **Publishable key** (starts with `pk_test_...`) → optional `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` if you add Stripe.js on the client later.
-4. For the webhook (so “invoice paid” is recorded when a test payment completes):
-   - **Local dev:** Install [Stripe CLI](https://stripe.com/docs/stripe-cli) and run:
-     ```bash
-     stripe login
-     stripe listen --forward-to localhost:3000/api/webhooks/stripe
-     ```
-     Copy the **webhook signing secret** (`whsec_...`) and set `STRIPE_WEBHOOK_SECRET` in `apps/invoice-saas/.env`.
-   - **Deployed (e.g. Vercel):** In Stripe Dashboard → Developers → Webhooks, add endpoint `https://your-domain.com/api/webhooks/stripe`, select `checkout.session.completed`, and use the signing secret as `STRIPE_WEBHOOK_SECRET`.
-
-If you **don’t** set Stripe keys: the app still runs; the public invoice page shows “Pay with Stripe” and clicking it shows “Payments are not configured” (graceful).
 
 ---
 
@@ -140,7 +117,7 @@ Add “Continue with Google” on the login page. Free: create a Web application
 
 - [ ] **Database:** Docker `docker compose up -d` **or** Neon connection string in each app’s `.env`.
 - [ ] **Auth:** Run `node scripts/generate-secret.js`, set `NEXTAUTH_SECRET` and `NEXTAUTH_URL` in each app’s `.env`.
-- [ ] **Stripe (optional):** Add `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` to `apps/invoice-saas/.env` when you want to demo payments.
+- [ ] **Razorpay (optional):** Add `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, and `RAZORPAY_WEBHOOK_SECRET` to `apps/invoice-saas/.env` when you want to demo payments.
 
 Then from the repo root:
 

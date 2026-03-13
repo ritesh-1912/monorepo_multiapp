@@ -1,6 +1,6 @@
 # Razorpay integration – what you need to do
 
-The invoice app uses **Razorpay** when you set these env vars (good for India; Stripe isn’t available for Indian businesses). Here’s what to get and where to put it.
+The invoice app uses **Razorpay** for payments. Set these env vars to enable the "Pay now" button.
 
 ---
 

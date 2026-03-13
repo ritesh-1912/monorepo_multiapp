@@ -4,7 +4,7 @@ A monorepo with three production-ready full-stack apps and a shared UI package. 
 
 | App | Purpose | Port |
 |-----|---------|------|
-| **invoice-saas** | Invoicing: create/send invoices, Razorpay or Stripe payments, public invoice page | 3000 |
+| **invoice-saas** | Invoicing: create/send invoices, Razorpay payments, public invoice page | 3000 |
 | **booking-platform** | Appointments: services, staff, availability, public booking flow | 3001 |
 | **analytics-dashboard** | Metrics: KPIs, charts, saved views, API keys, OpenAPI docs | 3002 |
 
@@ -42,7 +42,7 @@ npm run dev -w analytics-dashboard   # http://localhost:3002
 - **Frontend:** Next.js 14 (App Router), TypeScript, Tailwind CSS, shared `@repo/ui`
 - **Backend:** Next.js API routes, Drizzle ORM, PostgreSQL
 - **Auth:** NextAuth.js (credentials + optional Google OAuth)
-- **Payments:** Razorpay (India) or Stripe (invoice-saas)
+- **Payments:** Razorpay (invoice-saas)
 
 ## Setup Guide
 
@@ -52,7 +52,7 @@ Each app needs a `.env` file. Copy from `.env.example` in each app folder.
 
 | Doc | Purpose |
 |-----|---------|
-| [GETTING_ACCESS.md](docs/GETTING_ACCESS.md) | Database, auth, Razorpay/Stripe setup |
+| [GETTING_ACCESS.md](docs/GETTING_ACCESS.md) | Database, auth, Razorpay setup |
 | [RAZORPAY_SETUP.md](docs/RAZORPAY_SETUP.md) | Razorpay keys and webhook (India) |
 | [GOOGLE_OAUTH_SETUP.md](docs/GOOGLE_OAUTH_SETUP.md) | "Continue with Google" login |
 | [PUSHING_TO_GITHUB.md](docs/PUSHING_TO_GITHUB.md) | Security checklist before pushing |
@@ -83,7 +83,7 @@ GitHub Actions runs on push/PR: install, build UI, lint, format check, build all
 
 ```
 apps/
-  invoice-saas/       # Invoicing + Razorpay/Stripe
+  invoice-saas/       # Invoicing + Razorpay
   booking-platform/   # Booking + owner dashboard
   analytics-dashboard # Metrics + API keys + OpenAPI
 packages/

@@ -1,12 +1,12 @@
 # Invoice SaaS
 
-Create and send professional invoices, share a public link, and collect payment via **Razorpay** (India) or **Stripe** (elsewhere).
+Create and send professional invoices, share a public link, and collect payment via **Razorpay**.
 
 ## Features
 
 - Create invoices with line items, due dates, client info
 - Public invoice page at `/invoice/[publicId]` — no login required for clients
-- **Pay now** — Razorpay Checkout (India) or Stripe Checkout
+- **Pay now** — Razorpay Checkout
 - Webhook marks invoice as Paid automatically
 - Dashboard: invoice list, KPIs, audit log
 - Auth: credentials + optional Google OAuth
@@ -16,7 +16,7 @@ Create and send professional invoices, share a public link, and collect payment 
 - Next.js 14 (App Router), TypeScript, Tailwind, @repo/ui
 - PostgreSQL, Drizzle ORM
 - NextAuth (credentials + optional Google)
-- Razorpay or Stripe (payments)
+- Razorpay (payments)
 
 ## Setup
 
@@ -29,8 +29,7 @@ Create and send professional invoices, share a public link, and collect payment 
    - `DATABASE_URL` — PostgreSQL (e.g. `postgresql://postgres:postgres@localhost:5432/invoice` with Docker)
    - `NEXTAUTH_SECRET` — run `node scripts/generate-secret.js` from repo root
    - `NEXTAUTH_URL` — `http://localhost:3000`
-   - **Razorpay (India):** `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, optional `RAZORPAY_WEBHOOK_SECRET` — see [RAZORPAY_SETUP.md](../../docs/RAZORPAY_SETUP.md)
-   - **Stripe (outside India):** `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`
+   - **Razorpay:** `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, optional `RAZORPAY_WEBHOOK_SECRET` — see [RAZORPAY_SETUP.md](../../docs/RAZORPAY_SETUP.md)
 
 3. **Migrations** (from repo root):
    ```bash
@@ -58,7 +57,7 @@ Create and send professional invoices, share a public link, and collect payment 
 | `/dashboard/invoices/new` | Create invoice |
 | `/dashboard/settings` | Settings |
 | `/dashboard/audit-log` | Audit log |
-| `/invoice/[publicId]` | Public invoice + Pay now (Razorpay/Stripe) |
+| `/invoice/[publicId]` | Public invoice + Pay now (Razorpay) |
 
 ## E2E Tests
 
@@ -72,6 +71,5 @@ npm run e2e -w invoice-saas  # Terminal 2
 - `GET/POST /api/invoices` — List/create invoices
 - `GET/PATCH/DELETE /api/invoices/[id]` — Invoice CRUD
 - `GET /api/invoice/public/[publicId]` — Public invoice data
-- `POST /api/checkout` — Create checkout (Razorpay order or Stripe session)
+- `POST /api/checkout` — Create Razorpay order
 - `POST /api/webhooks/razorpay` — Razorpay webhook
-- `POST /api/webhooks/stripe` — Stripe webhook
