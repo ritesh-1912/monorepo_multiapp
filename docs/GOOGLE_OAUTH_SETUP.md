@@ -60,16 +60,21 @@ In your Vercel project → **Settings** → **Environment Variables**, add or up
 | `GOOGLE_CLIENT_ID` | Your Google Client ID | Same as local |
 | `GOOGLE_CLIENT_SECRET` | Your Google Client Secret | Same as local |
 
-### B. Google Cloud Console – add Vercel URLs
+### B. Google Cloud Console – add Vercel URLs (critical for OAuth)
 
-In **Google Cloud Console** → **Credentials** → your OAuth client → **Edit**:
+In **Google Cloud Console** → **APIs & Services** → **Credentials** → click your OAuth client → **Edit**:
 
-1. **Authorized JavaScript origins** – add:
-   - `https://your-app.vercel.app` (your Vercel URL)
-2. **Authorized redirect URIs** – add:
-   - `https://your-app.vercel.app/api/auth/callback/google`
+1. **Authorized JavaScript origins** – add each app’s Vercel URL:
+   - `https://monorepo-multiapp-invoice-saas.vercel.app`
+   - `https://monorepo-multiapp-analytics-dashboard.vercel.app`
+   - (or the exact URLs Vercel assigns to your projects)
 
-Use the exact URL Vercel gives you (e.g. `https://monorepo-multiapp-invoice-abc123.vercel.app`). No trailing slash.
+2. **Authorized redirect URIs** – add the callback URL for **each app**:
+   - `https://monorepo-multiapp-invoice-saas.vercel.app/api/auth/callback/google`
+   - `https://monorepo-multiapp-analytics-dashboard.vercel.app/api/auth/callback/google`
+   - (adjust domains if your Vercel URLs differ)
+
+If these URIs are missing, Google returns **Error 400: redirect_uri_mismatch**. Use the exact URLs (no trailing slash).
 
 ### C. Redeploy
 
